@@ -6,7 +6,7 @@ import { ArrowRight, Loader2, ScanLine } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader, EmptyState } from "@/components/page-header";
 import { UploadDropzone } from "@/components/upload-dropzone";
-import { HumanReviewBadge, SeverityBadge, StatusBadge } from "@/components/status-badges";
+import { SeverityBadge, StatusBadge } from "@/components/status-badges";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
