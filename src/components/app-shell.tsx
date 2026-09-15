@@ -1,0 +1,136 @@
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  Gauge,
+  ListChecks,
+  FileStack,
+  History,
+  Radar,
+  ShieldAlert,
+} from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { apiBaseUrl, isFixtureMode, setFixtureMode } from "@/lib/api";
+import { cn } from "@/lib/utils";
+
+const NAV = [
+  { to: "/", label: "Dashboard", icon: Gauge },
+  { to: "/queue", label: "Review Queue", icon: ListChecks },
+  { to: "/evidence", label: "Evidence Center", icon: FileStack },
+  { to: "/audit", label: "Audit History", icon: History },
+] as const;
+
+function FixtureToggle() {
+  const queryClient = useQueryClient();
+  const [enabled, setEnabled] = useState(true);
+
+  useEffect(() => {
+    setEnabled(isFixtureMode());
+  }, []);
+
+  return (
+    <div className="flex items-center gap-3">
+      <div className="hidden text-right sm:block">
+        <Label htmlFor="fixture-mode" className="tech-label cursor-pointer text-shell-muted">
+          Fixture data
+        </Label>
+        <p className="font-mono text-[11px] text-shell-muted/70">
+          {enabled ? "local sample set" : apiBaseUrl() || "VITE_API_BASE_URL unset"}
+        </p>
+      </div>
+      <Switch
+        id="fixture-mode"
+        checked={enabled}
+        onCheckedChange={(v) => {
+          setEnabled(v);
+          setFixtureMode(v);
+          queryClient.clear();
+        }}
+      />
+    </div>
+  );
+}
+
+export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  return (
+    <div className="flex min-h-screen bg-background">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-shell-border bg-shell text-shell-foreground md:flex">
+        <div className="grid-backdrop border-b border-shell-border px-5 py-5">
+          <div className="flex items-center gap-2">
+            <Radar className="size-5 text-steel" aria-hidden />
+            <span className="text-lg font-semibold tracking-tight">ClaimSense</span>
+          </div>
+          <p className="tech-label mt-1 text-shell-muted">AI damage reviewer</p>
+        </div>
+
+        <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main">
+          {NAV.map(({ to, label, icon: Icon }) => {
+            const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
+            return (
+              <Link
+                key={to}
+                to={to}
+                className={cn(
+                  "focus-ring flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors",
+                  active
+                    ? "bg-shell-elevated text-shell-foreground shadow-[inset_2px_0_0_0_var(--steel)]"
+                    : "text-shell-muted hover:bg-shell-elevated/60 hover:text-shell-foreground",
+                )}
+              >
+                <Icon className="size-4" aria-hidden />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="m-3 rounded-sm border border-shell-border bg-shell-elevated/60 p-3">
+          <p className="tech-label flex items-center gap-1.5 text-moderate">
+            <ShieldAlert className="size-3" aria-hidden />
+            Decision support only
+          </p>
+          <p className="mt-1.5 text-xs leading-relaxed text-shell-muted">
+            ClaimSense reports detected damage and provisional severity. Every assessment requires a
+            qualified human reviewer.
+          </p>
+        </div>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-shell-border bg-shell px-4 py-3 text-shell-foreground md:px-8">
+          <div className="flex items-center gap-2 md:hidden">
+            <Radar className="size-5 text-steel" aria-hidden />
+            <span className="font-semibold">ClaimSense</span>
+          </div>
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Breadcrumb">
+            <span className="tech-label text-shell-muted">Assessment workspace</span>
+          </nav>
+          <FixtureToggle />
+        </header>
+
+        <nav
+          className="flex gap-1 overflow-x-auto border-b border-shell-border bg-shell px-2 pb-2 md:hidden"
+          aria-label="Main mobile"
+        >
+          {NAV.map(({ to, label, icon: Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="focus-ring flex shrink-0 items-center gap-2 rounded-sm px-3 py-2 text-xs text-shell-muted [&.active]:bg-shell-elevated [&.active]:text-shell-foreground"
+              activeProps={{ className: "active" }}
+              activeOptions={{ exact: to === "/" }}
+            >
+              <Icon className="size-4" aria-hidden />
+              {label}
+            </Link>
+          ))}
+        </nav>
+
+        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>
+      </div>
+    </div>
+  );
+}
