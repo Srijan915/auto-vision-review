@@ -54,7 +54,7 @@ function SectionHeading({
 }: {
   icon: typeof BookOpen;
   title: string;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <div className="mb-3">
