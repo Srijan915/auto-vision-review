@@ -10,33 +10,80 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuditRouteImport } from './routes/audit'
+import { Route as EvidenceRouteImport } from './routes/evidence'
+import { Route as QueueRouteImport } from './routes/queue'
+import { Route as AssessmentsAssessmentIdRouteImport } from './routes/assessments.$assessmentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuditRoute = AuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvidenceRoute = EvidenceRouteImport.update({
+  id: '/evidence',
+  path: '/evidence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QueueRoute = QueueRouteImport.update({
+  id: '/queue',
+  path: '/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssessmentsAssessmentIdRoute = AssessmentsAssessmentIdRouteImport.update({
+  id: '/assessments/$assessmentId',
+  path: '/assessments/$assessmentId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
+  '/evidence': typeof EvidenceRoute
+  '/queue': typeof QueueRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
+  '/evidence': typeof EvidenceRoute
+  '/queue': typeof QueueRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
+  '/evidence': typeof EvidenceRoute
+  '/queue': typeof QueueRoute
+  '/assessments/$assessmentId': typeof AssessmentsAssessmentIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/audit' | '/evidence' | '/queue' | '/assessments/$assessmentId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/audit' | '/evidence' | '/queue' | '/assessments/$assessmentId'
+  id:
+    | '__root__'
+    | '/'
+    | '/audit'
+    | '/evidence'
+    | '/queue'
+    | '/assessments/$assessmentId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuditRoute: typeof AuditRoute
+  EvidenceRoute: typeof EvidenceRoute
+  QueueRoute: typeof QueueRoute
+  AssessmentsAssessmentIdRoute: typeof AssessmentsAssessmentIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +95,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/audit': {
+      id: '/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evidence': {
+      id: '/evidence'
+      path: '/evidence'
+      fullPath: '/evidence'
+      preLoaderRoute: typeof EvidenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/queue': {
+      id: '/queue'
+      path: '/queue'
+      fullPath: '/queue'
+      preLoaderRoute: typeof QueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessments/$assessmentId': {
+      id: '/assessments/$assessmentId'
+      path: '/assessments/$assessmentId'
+      fullPath: '/assessments/$assessmentId'
+      preLoaderRoute: typeof AssessmentsAssessmentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuditRoute: AuditRoute,
+  EvidenceRoute: EvidenceRoute,
+  QueueRoute: QueueRoute,
+  AssessmentsAssessmentIdRoute: AssessmentsAssessmentIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
