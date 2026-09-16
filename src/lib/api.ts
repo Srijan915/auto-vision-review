@@ -250,7 +250,9 @@ export async function getAssessment(assessmentId: string): Promise<Assessment> {
 export async function createAssessment(input: CreateAssessmentInput): Promise<Assessment> {
   if (isFixtureMode()) return fixtureCreate(input);
   const form = new FormData();
-  input.files.forEach((file) => form.append("images", file));
+  const file = input.files[0];
+if (!file) throw new ApiError(400, "Please select an image.");
+form.append("image", file);
   form.append("vehicle", JSON.stringify(input.vehicle));
   if (input.notes) form.append("notes", input.notes);
   return request<Assessment>("/assessments", { method: "POST", body: form });
