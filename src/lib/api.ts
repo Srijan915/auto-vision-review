@@ -6,26 +6,20 @@ import type {
   Severity,
 } from "@/types/claim";
 
-const API_BASE_URL = (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ?? "";
-const FIXTURE_KEY = "claimsense.fixture-mode";
+const API_BASE_URL =
+  (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ?? "";
 
-/** Fixture mode keeps the app fully interactive without a live FastAPI backend. */
+/** ClaimSense demo always runs with local fixture data. */
 export function isFixtureMode(): boolean {
-  if (typeof window === "undefined") return true;
-  const stored = window.localStorage.getItem(FIXTURE_KEY);
-  if (stored === null) return true;
-  return stored === "true";
-}
-
-export function setFixtureMode(enabled: boolean) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(FIXTURE_KEY, String(enabled));
+  return true;
 }
 
 export function apiBaseUrl() {
   return API_BASE_URL;
 }
 
+/* ------------------------------------------------------------------ */
+/* In-memory fixture store                                             */
 /* ------------------------------------------------------------------ */
 /* In-memory fixture store                                             */
 /* ------------------------------------------------------------------ */

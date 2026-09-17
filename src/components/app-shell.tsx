@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   Gauge,
   ListChecks,
@@ -11,9 +10,6 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { apiBaseUrl, isFixtureMode, setFixtureMode } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -35,7 +31,6 @@ function ThemeToggle() {
     document.documentElement.classList.remove("dark", "light");
     document.documentElement.classList.add(saved);
     document.documentElement.style.colorScheme = saved;
-
     setTheme(saved);
   }, []);
 
@@ -45,7 +40,6 @@ function ThemeToggle() {
     document.documentElement.classList.remove("dark", "light");
     document.documentElement.classList.add(nextTheme);
     document.documentElement.style.colorScheme = nextTheme;
-
     window.localStorage.setItem("claimsense-theme", nextTheme);
     setTheme(nextTheme);
   };
@@ -65,6 +59,7 @@ function ThemeToggle() {
       ) : (
         <Moon className="size-3.5" aria-hidden />
       )}
+
       <span className="hidden text-xs sm:inline">
         {isDark ? "Light" : "Dark"}
       </span>
@@ -72,39 +67,10 @@ function ThemeToggle() {
   );
 }
 
-function FixtureToggle() {
-  const queryClient = useQueryClient();
-  const [enabled, setEnabled] = useState(true);
-
-  useEffect(() => {
-    setEnabled(isFixtureMode());
-  }, []);
-
-  return (
-    <div className="flex items-center gap-3">
-      <div className="hidden text-right sm:block">
-        <Label htmlFor="fixture-mode" className="tech-label cursor-pointer text-shell-muted">
-          Fixture data
-        </Label>
-        <p className="font-mono text-[11px] text-shell-muted/70">
-          {enabled ? "local sample set" : apiBaseUrl() || "VITE_API_BASE_URL unset"}
-        </p>
-      </div>
-      <Switch
-        id="fixture-mode"
-        checked={enabled}
-        onCheckedChange={(v) => {
-          setEnabled(v);
-          setFixtureMode(v);
-          queryClient.clear();
-        }}
-      />
-    </div>
-  );
-}
-
 export function AppShell({ children }: { children: ReactNode }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pathname = useRouterState({
+    select: (s) => s.location.pathname,
+  });
 
   return (
     <div className="flex min-h-screen bg-background selection:bg-steel/20">
@@ -114,16 +80,26 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="flex size-8 items-center justify-center rounded-md border border-steel/30 bg-steel/10 text-steel">
               <Radar className="size-4" aria-hidden />
             </span>
+
             <div>
-              <span className="block text-[15px] font-semibold tracking-tight">ClaimSense</span>
-              <span className="tech-label text-shell-muted">Operations desk</span>
+              <span className="block text-[15px] font-semibold tracking-tight">
+                ClaimSense
+              </span>
+              <span className="tech-label text-shell-muted">
+                Operations desk
+              </span>
             </div>
           </div>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 p-3" aria-label="Main">
+        <nav
+          className="flex flex-1 flex-col gap-1 p-3"
+          aria-label="Main"
+        >
           {NAV.map(({ to, label, icon: Icon }) => {
-            const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
+            const active =
+              to === "/" ? pathname === "/" : pathname.startsWith(to);
+
             return (
               <Link
                 key={to}
@@ -147,9 +123,10 @@ export function AppShell({ children }: { children: ReactNode }) {
             <ShieldAlert className="size-3" aria-hidden />
             Decision support only
           </p>
+
           <p className="mt-1.5 text-xs leading-relaxed text-shell-muted">
-            ClaimSense reports detected damage and provisional severity. Every assessment requires a
-            qualified human reviewer.
+            ClaimSense reports detected damage and provisional severity. Every
+            assessment requires a qualified human reviewer.
           </p>
         </div>
       </aside>
@@ -160,12 +137,18 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Radar className="size-5 text-steel" aria-hidden />
             <span className="font-semibold">ClaimSense</span>
           </div>
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Breadcrumb">
-            <span className="tech-label text-shell-muted">Assessment workspace</span>
+
+          <nav
+            className="hidden items-center gap-1 md:flex"
+            aria-label="Breadcrumb"
+          >
+            <span className="tech-label text-shell-muted">
+              Assessment workspace
+            </span>
           </nav>
+
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <FixtureToggle />
           </div>
         </header>
 
@@ -187,7 +170,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
-        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>
+        <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
+          {children}
+        </main>
       </div>
     </div>
   );
