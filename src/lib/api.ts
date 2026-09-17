@@ -220,8 +220,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(0, `Could not reach the assessment API at ${API_BASE_URL}.`);
   }
   if (!res.ok) {
-    throw new ApiError(res.status, `Request failed (${res.status} ${res.statusText}).`);
-  }
+  const errorText = await res.text();
+  throw new ApiError(
+    res.status,
+    `Request failed (${res.status} ${res.statusText}): ${errorText}`,
+  );
+}
   return (await res.json()) as T;
 }
 
