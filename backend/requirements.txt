@@ -1,0 +1,16 @@
+# Direct, pinned runtime dependencies for the existing ClaimSense .venv.
+# Their transitive requirements are resolved by pip.
+fastapi==0.141.1
+uvicorn==0.52.3
+python-multipart==0.0.32
+streamlit==1.61.1
+requests==2.34.2
+ultralytics==8.4.130
+numpy==2.4.6
+Pillow==12.3.0
+PyYAML==6.0.3
+faiss-cpu==1.15.0
+sentence-transformers==5.7.0
+google-genai==2.18.1
+python-dotenv==1.2.2
+pydantic==2.13.4

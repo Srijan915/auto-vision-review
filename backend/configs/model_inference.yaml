@@ -1,0 +1,8 @@
+# Runtime configuration for the recovered ClaimSense severity detector.
+model_path: models/severity/severity-yolov8n-20260906T185437Z/best.pt
+device: cpu
+imgsz: 640
+# Kept deliberately low so evidence is preserved rather than silently discarded.
+minimum_detection_confidence: 0.001
+# Operational review flag only; this is not a coverage, payment, or approval threshold.
+human_review_confidence: 0.25

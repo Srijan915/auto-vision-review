@@ -34,3 +34,16 @@ dist-ssr
 .env
 
 .env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local backend uploads
+backend/data/uploads/
+
+# Local databases
+*.sqlite3
+
+# Local processed training dataset
+backend/data/processed/

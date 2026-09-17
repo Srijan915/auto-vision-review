@@ -1,0 +1,3 @@
+# Gemini is optional; the API key remains only in .env as GEMINI_API_KEY.
+model: gemini-3.6-flash
+max_evidence_chunks: 3

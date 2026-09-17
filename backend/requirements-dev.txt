@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# Test transport used by the FastAPI integration tests.
+httpx==0.28.1

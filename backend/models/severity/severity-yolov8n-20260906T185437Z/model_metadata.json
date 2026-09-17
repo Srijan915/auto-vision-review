@@ -1,0 +1,77 @@
+{
+  "run_id": "severity-yolov8n-20260906T185437Z",
+  "dataset_archive_sha256": "8949350df4fa9415b950ac594a50d2a164fd1fd4a7a9f441d7e514879ad127f7",
+  "classes": [
+    "minor",
+    "moderate",
+    "severe"
+  ],
+  "training_config": {
+    "model": "yolov8n.pt",
+    "epochs": 60,
+    "patience": 15,
+    "batch": 4,
+    "imgsz": 640,
+    "device": "cpu",
+    "workers": 0,
+    "seed": 42,
+    "optimizer": "AdamW",
+    "lr0": 0.001,
+    "lrf": 0.01,
+    "weight_decay": 0.0005,
+    "cos_lr": true,
+    "deterministic": true,
+    "pretrained": true,
+    "augment": {
+      "hsv_h": 0.015,
+      "hsv_s": 0.7,
+      "hsv_v": 0.4,
+      "degrees": 0.0,
+      "translate": 0.1,
+      "scale": 0.5,
+      "shear": 0.0,
+      "fliplr": 0.5,
+      "flipud": 0.0,
+      "mosaic": 0.5,
+      "mixup": 0.0,
+      "close_mosaic": 10
+    }
+  },
+  "test_evaluation": {
+    "checkpoint": "C:\\Users\\HP\\.vscode\\PROJECT AVENGERS\\artifacts\\training\\severity\\severity-yolov8n-20260906T185437Z\\weights\\best.pt",
+    "metrics": {
+      "metrics/precision(B)": 0.30821813182003405,
+      "metrics/recall(B)": 0.2571510510668372,
+      "metrics/mAP50(B)": 0.18792214467378618,
+      "metrics/mAP50-95(B)": 0.09582570961476096,
+      "fitness": 0.09582570961476096
+    },
+    "per_class": [
+      {
+        "class_id": 0,
+        "class_name": "minor",
+        "precision": 0.2309460887728176,
+        "recall": 0.1288888888888889,
+        "map50": 0.08785548160487723,
+        "map50_95": 0.03974201299054893
+      },
+      {
+        "class_id": 1,
+        "class_name": "moderate",
+        "precision": 0.31714705770875734,
+        "recall": 0.3190348525469169,
+        "map50": 0.19962227152916173,
+        "map50_95": 0.07590045213499302
+      },
+      {
+        "class_id": 2,
+        "class_name": "severe",
+        "precision": 0.3765612489785272,
+        "recall": 0.3235294117647059,
+        "map50": 0.27628868088731956,
+        "map50_95": 0.17183466371874087
+      }
+    ]
+  },
+  "limitations": "Damage-region severity decision support only; not coverage, payout, liability, fraud, or repair-cost prediction."
+}

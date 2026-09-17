@@ -1,0 +1,28 @@
+model: yolov8n.pt
+epochs: 60
+patience: 15
+batch: 4
+imgsz: 640
+device: cpu
+workers: 0
+seed: 42
+optimizer: AdamW
+lr0: 0.001
+lrf: 0.01
+weight_decay: 0.0005
+cos_lr: true
+deterministic: true
+pretrained: true
+augment:
+  hsv_h: 0.015
+  hsv_s: 0.7
+  hsv_v: 0.4
+  degrees: 0.0
+  translate: 0.1
+  scale: 0.5
+  shear: 0.0
+  fliplr: 0.5
+  flipud: 0.0
+  mosaic: 0.5
+  mixup: 0.0
+  close_mosaic: 10
